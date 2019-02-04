@@ -1,3 +1,3 @@
-export class OrderItems{
-    constructor(public orderId:string , public code:string , public quantity:number , public unitPrice: number){}
+export class OrderItem{
+    constructor(public order_id:string , public code:string , public quantity:number , public unit_price: number){}
 }

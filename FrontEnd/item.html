@@ -32,6 +32,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <style>
+    .icon-delete {
+      width: 20px;
+      height: 20px;
+      background-image: url('img/recyclebin.png');
+      background-size: contain;
+      background-position: center;
+    }
+
+    .icon-delete:hover:not(.icon-disabled) {
+      background-image: url('img/recyclebin-hover.png');
+    }
+
+    .selected-row {
+      background-color: yellow;
+    }
+  </style>
+
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -122,26 +141,26 @@ desired effect
               <form role="form">
                 <div class="box-body">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Item Code</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Item Code">
+                    <label >Item Code</label>
+                    <input type="text" class="form-control" id="txtCode" placeholder="Item Code">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputPassword1">Item Description</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Item Description">
+                    <label >Item Description</label>
+                    <input type="text" class="form-control" id="txtDescription" placeholder="Item Description">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputPassword1">Unit Price</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Unit Price">
+                    <label >Unit Price</label>
+                    <input type="text" class="form-control" id="txtUnitPrice" placeholder="Unit Price">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputPassword1">Quantity</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Customer Quantity">
+                    <label >Quantity</label>
+                    <input type="text" class="form-control" id="txtQuantity" placeholder="Quantity">
                   </div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer" style="text-align: right;">
-                  <button type="button" class="btn btn-primary">Save</button>
-                  <button type="button" class="btn btn-danger">Remove</button>
+                  <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                  <button type="reset" class="btn btn-danger" id="btnClear">Clear</button>
                 </div>
               </form>
             </div>
@@ -153,7 +172,7 @@ desired effect
 
             <div class="box">
               <div class="box-header">
-                <h3 class="box-title">All Customers In the System</h3>
+                <h3 class="box-title">All Items In the System</h3>
               </div>
               <!-- /.box-header -->
               <div class="box-body">
@@ -164,27 +183,10 @@ desired effect
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Item Description</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Unit Price</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Quantity</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Delete</th>
 
                   </thead>
-                  <tbody>
-                  <tr role="row" class="odd">
-                    <td class="sorting_1">Item 1</td>
-                    <td>Audi A1</td>
-                    <td>One Million</td>
-                    <td>4</td>
-                  </tr>
-                  <tr role="row" class="odd">
-                    <td class="sorting_1">Item 2</td>
-                    <td>Toyota Axio</td>
-                    <td>Seven Million</td>
-                    <td>10</td>
-                  </tr>
-                  <tr role="row" class="odd">
-                    <td class="sorting_1">Item 3</td>
-                    <td>Nissan Leaf</td>
-                    <td>Six Million</td>
-                    <td>3</td>
-                  </tr>
+                  <tbody id="tblItem">
                   </tbody>
                   <tfoot>
                   </tfoot>
@@ -196,17 +198,6 @@ desired effect
 
                 </div>
               </div>
-
-
-
-
-
-
-
-
-
-
-
 
       </section>
       <!-- /.content -->
@@ -237,6 +228,151 @@ desired effect
   <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
+
+<script>
+
+  $("#btnClear").click(function () {
+      $("#tblItem tr").removeClass("selected-row");
+      $("#txtCode").attr("disabled",false);
+  });
+
+  window.onload = function () {
+      loadtable();
+  }
+
+  function loadtable() {
+
+      var ajaxConfig = {
+          method : "GET",
+          url : "http://localhost:3000/api/v1/items",
+          async : true
+      }
+
+      $.ajax(ajaxConfig).done(function (response , responseText , jxhr) {
+
+          var fillItemTable;
+
+          for(var i=0;i<response.length;i++){
+              fillItemTable = fillItemTable + `<tr role="row" class="odd">
+                                                    <td>${response[i].code}</td>
+                                                    <td>${response[i].description}</td>
+                                                    <td>${response[i].uprice}</td>
+                                                    <td>${response[i].qty}</td>
+                                                    <td><div class="icon-delete"></div></td>
+                                               </tr>`;
+          }
+
+          $("#tblItem tr").remove();
+          $("#tblItem").append(fillItemTable);
+
+          $("#tblItem tr").off("click");
+          $("#tblItem tr").click(function () {
+              var code = $(this).find("td:nth-child(1)").text();
+              var description = $(this).find("td:nth-child(2)").text();
+              var uprice = $(this).find("td:nth-child(3)").text();
+              var quantity = $(this).find("td:nth-child(4)").text();
+
+              $("#txtCode").val(code);
+              $("#txtDescription").val(description);
+              $("#txtUnitPrice").val(uprice);
+              $("#txtQuantity").val(quantity);
+
+              $("#txtCode").attr("disabled",true);
+              $("#tblItem tr").removeClass("selected-row");
+              $(this).addClass("selected-row");
+
+          });
+
+          $(".icon-delete").click(function (eventData) {
+              eventData.stopPropagation();
+              if (confirm("Do you want to delete the item ?")) {
+
+                  var itemCode = $(this).parents("tr").find("td:nth-child(1)").text();
+
+                  $(this).parents("tr").fadeOut(500, function () {
+                      // $(this).parents("tr").remove();
+                  });
+
+                  var ajaxConfig = {
+                      method: "DELETE",
+                      url: "http://localhost:3000/api/v1/items/" + itemCode,
+                      async: true
+                  };
+
+                  $.ajax(ajaxConfig).done(function (response, statusText, jxhr) {
+
+                  }).fail(function (jxhr, statusText, err) {
+                      alert("Can not Delete the Item. Try Again");
+                      console.log(err);
+                  })
+
+              }
+          });
+
+      })
+
+  }
+
+  $("#btnSave").click(function () {
+
+      var isEdit =$("#txtCode").attr("disabled");
+
+      if(isEdit){
+
+          var item = {
+              code : $("#txtCode").val(),
+              description : $("#txtDescription").val(),
+              uprice : $("#txtUnitPrice").val(),
+              qty: $("#txtQuantity").val()
+          };
+
+          var ajaxConfig = {
+              method:"PUT",
+              url:"http://localhost:3000/api/v1/items/"+$("#txtCode").val(),
+              async :true,
+              contentType : "application/json",
+              data :JSON.stringify(item)
+          };
+
+          $.ajax(ajaxConfig).done(function (response , responseText , jxhr) {
+              alert("Item Successfully Updated");
+              loadtable();
+              $('button[type="reset"]').trigger("click");
+          }).fail(function (jxhr , responseText , err) {
+              alert("Item Details Can not Updated. Try Again");
+          })
+
+      }else{
+
+          var item = {
+              code : $("#txtCode").val(),
+              description : $("#txtDescription").val(),
+              uprice : $("#txtUnitPrice").val(),
+              qty: $("#txtQuantity").val()
+          };
+
+          var ajaxConfig = {
+              method:"POST",
+              url:"http://localhost:3000/api/v1/items/",
+              async :true,
+              contentType : "application/json",
+              data :JSON.stringify(item)
+          };
+
+          $.ajax(ajaxConfig).done(function () {
+              alert("Item Successfully Added");
+              loadtable();
+              $('button[type="reset"]').trigger("click");
+          }).fail(function () {
+              alert("Item Can Not be added");
+          })
+
+      }
+
+
+  });
+
+</script>
 </body>
 
 </html>

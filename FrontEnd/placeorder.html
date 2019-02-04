@@ -113,7 +113,7 @@ desired effect
 
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
 
                     <div class="box box-primary">
                         <!-- form start -->
@@ -123,16 +123,16 @@ desired effect
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Order ID</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1"
-                                                   placeholder="Order ID">
+                                            <label>Order ID</label>
+                                            <input type="text" class="form-control" id="txtOrderID"
+                                                   placeholder="Order ID" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Order Date</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1"
-                                                   placeholder="Order Date">
+                                            <label>Order Date</label>
+                                            <input type="text" class="form-control" id="txtOrderDate"
+                                                   placeholder="Order Date" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +141,8 @@ desired effect
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Customer ID</label>
-                                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                            <select class="form-control select2 select2-hidden-accessible"
+                                                    style="width: 100%;" tabindex="-1" aria-hidden="true">
                                                 <option>C001</option>
                                                 <option>C002</option>
                                                 <option>C003</option>
@@ -151,9 +152,9 @@ desired effect
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Customer Name</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1"
-                                                   placeholder="Customer ID">
+                                            <label>Customer Name</label>
+                                            <input type="text" class="form-control" id="txtCustomerName"
+                                                   placeholder="Customer Name" disabled>
                                         </div>
                                     </div>
 
@@ -163,7 +164,8 @@ desired effect
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Item Code</label>
-                                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                            <select class="form-control select2 select2-hidden-accessible"
+                                                    style="width: 100%;" tabindex="-1" aria-hidden="true">
                                                 <option>Item 1</option>
                                                 <option>Item 2</option>
                                                 <option>Item 3</option>
@@ -173,45 +175,54 @@ desired effect
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Item Description</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1"
-                                                   placeholder="Customer ID">
+                                            <label>Item Description</label>
+                                            <input type="text" class="form-control" id="txtDescription"
+                                                   placeholder="Item Description" disabled>
                                         </div>
                                     </div>
 
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Quantity In Hand</label>
+                                            <input type="text" class="form-control" id="txtQuantityInHand"
+                                                   placeholder="Quantity In Hand" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Unit Price</label>
+                                            <input type="text" class="form-control" id="txtUnit Price"
+                                                   placeholder="Unit Price" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Order Quantity</label>
+                                            <input type="text" class="form-control" id="txtOrderQuantity"
+                                                   placeholder="Order Quantity">
+                                        </div>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Customer ID</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1"
-                                           placeholder="Customer ID">
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Customer Name</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1"
-                                           placeholder="Customer Name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Customer Address</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1"
-                                           placeholder="Customer Address">
-                                </div>
+
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer" style="text-align: right;">
-                                <button type="button" class="btn btn-primary">Save</button>
-                                <button type="button" class="btn btn-danger">Remove</button>
+                                <button type="button" class="btn btn-primary" id="btnSave">Save</button>
+                                <button type="reset" class="btn btn-danger">Clear</button>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-7">
 
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">All Customers In the System</h3>
+                            <h3 class="box-title">Order Cart</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -229,25 +240,42 @@ desired effect
                                                 <th class="sorting_asc" tabindex="0" aria-controls="example2"
                                                     rowspan="1" colspan="1" aria-sort="ascending"
                                                     aria-label="Rendering engine: activate to sort column descending">
-                                                    Customer ID
+                                                    Item Code
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                     colspan="1" aria-label="Browser: activate to sort column ascending">
-                                                    Customer Name
+                                                    Description
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                     colspan="1"
-                                                    aria-label="Platform(s): activate to sort column ascending">Customer
-                                                    Address
+                                                    aria-label="Platform(s): activate to sort column ascending">Unit Price
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Platform(s): activate to sort column ascending">Total Value
+                                                </th>
+                                                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Platform(s): activate to sort column ascending">Order
+                                                    Quantity
+                                                </th>
+
+                                                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Platform(s): activate to sort column ascending">Remove
                                                 </th>
                                             </thead>
                                             <tbody>
                                             <tr role="row" class="odd">
-                                                <td class="sorting_1">C001</td>
-                                                <td>Sameera Senarathna</td>
-                                                <td>Panadura</td>
+                                                <td class="sorting_1">Item1</td>
+                                                <td>Oppo F5</td>
+                                                <td>2</td>
                                             </tr>
                                         </table>
+                                        <div class="box-footer" style="text-align: right;">
+                                            <button type="button" class="btn btn-primary" id="btnPlaceOrder">Place Order</button>
+
+                                        </div>
                                     </div>
 
                                 </div>

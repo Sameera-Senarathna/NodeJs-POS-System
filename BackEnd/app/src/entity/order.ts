@@ -1,3 +1,3 @@
 export class Order{
-    constructor(public orderId :string , public orderDate : string , public customerId:string){}
+    constructor(public order_id :string , public order_date : string , public c_id:string){}
 }
