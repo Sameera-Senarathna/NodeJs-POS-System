@@ -5,6 +5,19 @@ var OrderDAOImpl = /** @class */ (function () {
     function OrderDAOImpl(connection) {
         this.connection = connection;
     }
+    OrderDAOImpl.prototype.count = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.connection.query("SELECT COUNT(*) as count FROM orders", function (err, result) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(result[0].count);
+                }
+            });
+        });
+    };
     OrderDAOImpl.prototype.findAll = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
@@ -48,7 +61,7 @@ var OrderDAOImpl = /** @class */ (function () {
     OrderDAOImpl.prototype.save = function (entity) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            _this.connection.query("INSERT INTO orders VALUES(" + entity.order_id + "," + entity.order_date + "," + entity.c_id + ")", function (error, result) {
+            _this.connection.query("INSERT INTO orders VALUES(" + entity.order_id + ",'" + entity.order_date + "','" + entity.c_id + "')", function (error, result) {
                 if (error) {
                     reject(error);
                 }

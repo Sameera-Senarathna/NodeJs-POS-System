@@ -71,16 +71,43 @@ export class OrderBO{
                     const orderDAO = new OrderDAOImpl(connection);
                     const orderItemDAO = new OrderItemDAOImpl(connection);
 
-                    const orderSavePromise = orderDAO.save(order);
+                    orderDAO.save(order);
 
                     for(var i = 0 ; i< orderItem.length ; i++ ){
                         orderItemDAO.save(orderItem[i]);
                     }
 
+                    resolve(true);
+
                 }
             });
         });
 
+    }
+
+    countOrders() : Promise<number>{
+        return new Promise((resolve, reject) => {
+
+            pool.getConnection((err, connection) => {
+                if(err){
+                    reject(err);
+                }else {
+
+                    const orderDAO = new OrderDAOImpl(connection); // need to change
+
+                    const promise = orderDAO.count();
+
+                    promise.then(count => {
+                        resolve(count);
+                        pool.releaseConnection(connection);
+                    }).catch(error => {
+                        reject(error);
+                        pool.releaseConnection(connection);
+                    } );
+
+                }
+            });
+        });
     }
 
 }

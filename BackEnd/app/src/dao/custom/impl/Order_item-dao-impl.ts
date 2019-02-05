@@ -39,7 +39,7 @@ export class OrderItemDAOImpl implements OrderItemDAO{
     save(entity: OrderItem): Promise<boolean> {
         return new Promise((resolve, reject) => {
 
-            this.connection.query(`INSERT INTO order_item VALUES ('${entity.order_id}','${entity.code}','${entity.quantity}','${entity.unit_price}')`, function (err, result) {
+            this.connection.query(`INSERT INTO order_item VALUES (${entity.order_id},'${entity.code}',${entity.quantity},${entity.unit_price})`, function (err, result) {
                 if (err) {
                     reject(err);
                 } else {

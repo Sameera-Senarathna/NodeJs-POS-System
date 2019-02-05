@@ -56,10 +56,31 @@ var OrderBO = /** @class */ (function () {
                 else {
                     var orderDAO = new order_dao_impl_1.OrderDAOImpl(connection);
                     var orderItemDAO = new Order_item_dao_impl_1.OrderItemDAOImpl(connection);
-                    var orderSavePromise = orderDAO.save(order);
+                    orderDAO.save(order);
                     for (var i = 0; i < orderItem.length; i++) {
                         orderItemDAO.save(orderItem[i]);
                     }
+                    resolve(true);
+                }
+            });
+        });
+    };
+    OrderBO.prototype.countOrders = function () {
+        return new Promise(function (resolve, reject) {
+            db_connection_1.pool.getConnection(function (err, connection) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    var orderDAO = new order_dao_impl_1.OrderDAOImpl(connection); // need to change
+                    var promise = orderDAO.count();
+                    promise.then(function (count) {
+                        resolve(count);
+                        db_connection_1.pool.releaseConnection(connection);
+                    }).catch(function (error) {
+                        reject(error);
+                        db_connection_1.pool.releaseConnection(connection);
+                    });
                 }
             });
         });

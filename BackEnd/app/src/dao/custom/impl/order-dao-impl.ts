@@ -7,6 +7,18 @@ export class OrderDAOImpl implements OrderDAO{
 
     constructor(private connection: PoolConnection) {}
 
+    count(): Promise<number> {
+        return new Promise((resolve, reject) => {
+            this.connection.query("SELECT COUNT(*) as count FROM orders", function (err, result) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result[0].count);
+                }
+            });
+        });
+    }
+
     findAll(): Promise<Array<Order>> {
 
         return new Promise((resolve, reject) => {
@@ -51,7 +63,7 @@ export class OrderDAOImpl implements OrderDAO{
 
     save(entity: Order): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            this.connection.query(`INSERT INTO orders VALUES(${entity.order_id},${entity.order_date},${entity.c_id})`,function (error , result) {
+            this.connection.query(`INSERT INTO orders VALUES(${entity.order_id},'${entity.order_date}','${entity.c_id}')`,function (error , result) {
                 if (error) {
                     reject(error);
                 } else {
